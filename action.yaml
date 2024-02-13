@@ -1,0 +1,34 @@
+name: Validate Sigma Rules
+description: "Validate Sigma rules using the JSON schema"
+branding:
+  icon: check-circle
+  color: green
+inputs:
+  paths:
+    description: "Paths to the Sigma rules (can be a newline-separated list of paths or files)"
+    required: false
+    default: "/"
+  schemaURL:
+    description: "URL of the JSON schema"
+    required: false
+  schemaFile:
+    description: "Path to the local JSON schema"
+    required: false
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Set up Python
+      uses: actions/setup-python@v5
+    - name: Install dependencies
+      shell: bash
+      run: pip install check-jsonschema
+    - name: Validate Sigma rules
+      shell: bash
+      run: ${{ github.action_path }}/validate.sh
+      env:
+        SIGMA_RULES_PATH: ${{ inputs.paths }}
+        SIGMA_SCHEMA_URL: ${{ inputs.schemaURL }}
+        SIGMA_SCHEMA_FILE: ${{ inputs.schemaFile }}
