@@ -24,11 +24,19 @@ runs:
       uses: actions/setup-python@v5
     - name: Install dependencies
       shell: bash
-      run: pip install check-jsonschema
+      run: pip install requests check-jsonschema
     - name: Validate Sigma rules
       shell: bash
-      run: ${{ github.action_path }}/validate.sh
+      run: |
+        echo "Downloading validate.py from Sigma repository"
+        wget -O ${{ github.action_path }}/validate.py https://raw.githubusercontent.com/SigmaHQ/sigma/main/tests/validate-sigma-schema/validate.py
+
+        echo "Validating Sigma rules against sigma-schema.json"
+        SCHEMA_FILE=$(python ${{ github.action_path }}/validate.py schema)
+        RULES=$(python ${{ github.action_path }}/validate.py rules)
+        check-jsonschema --schemafile ${SCHEMA_FILE} ${RULES}
       env:
+        GITHUB_ACTION_PATH: ${{ github.action_path }}
         SIGMA_RULES_PATH: ${{ inputs.paths }}
         SIGMA_SCHEMA_URL: ${{ inputs.schemaURL }}
         SIGMA_SCHEMA_FILE: ${{ inputs.schemaFile }}
