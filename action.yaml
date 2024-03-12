@@ -29,12 +29,10 @@ runs:
       shell: bash
       run: |
         echo "Downloading validate.py from Sigma repository"
-        wget -O ${{ github.action_path }}/validate.py https://raw.githubusercontent.com/SigmaHQ/sigma/main/tests/validate-sigma-schema/validate.py
+        wget -O ${{ github.action_path }}/validate.py https://raw.githubusercontent.com/SigmaHQ/sigma/master/tests/validate-sigma-schema/validate.py
 
         echo "Validating Sigma rules against sigma-schema.json"
-        SCHEMA_FILE=$(python ${{ github.action_path }}/validate.py schema)
-        RULES=$(python ${{ github.action_path }}/validate.py rules)
-        check-jsonschema --schemafile ${SCHEMA_FILE} ${RULES}
+        check-jsonschema --schemafile $(python ${{ github.action_path }}/validate.py schema) $(python ${{ github.action_path }}/validate.py rules)
       env:
         GITHUB_ACTION_PATH: ${{ github.action_path }}
         SIGMA_RULES_PATH: ${{ inputs.paths }}
