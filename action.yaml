@@ -35,6 +35,7 @@ runs:
         echo "Validating Sigma rules against sigma-schema.json"
         check-jsonschema --schemafile $(python ${{ github.action_path }}/validate.py schema) $(python ${{ github.action_path }}/validate.py rules)
       env:
+        GITHUB_ACTION_PATH: ${{ github.workspace }}
         SIGMA_RULES_PATH: ${{ inputs.paths }}
         SIGMA_SCHEMA_URL: ${{ inputs.schemaURL }}
         SIGMA_SCHEMA_FILE: ${{ inputs.schemaFile }}
