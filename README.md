@@ -35,7 +35,7 @@ The `paths` can be used to provide multiple paths to the rules. For example, if 
 
 ```yaml
 steps:
-    - uses: mostafa/validate-sigma-rules@v0
+    - uses: SigmaHQ/validate-sigma-rules@v0
       with:
         paths: |-
           ./rules
