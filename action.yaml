@@ -7,7 +7,7 @@ inputs:
   paths:
     description: "Paths to the Sigma rules (can be a newline-separated list of paths or files)"
     required: false
-    default: "/"
+    default: "./"
   schemaURL:
     description: "URL of the JSON schema"
     required: false
