@@ -7,7 +7,7 @@ inputs:
   paths:
     description: "Paths to the Sigma rules (can be a newline-separated list of paths or files)"
     required: false
-    default: "./"
+    default: "/"
   schemaURL:
     description: "URL of the JSON schema"
     required: false
@@ -33,10 +33,7 @@ runs:
         wget -O ${{ github.action_path }}/validate.py https://raw.githubusercontent.com/SigmaHQ/sigma/master/tests/validate-sigma-schema/validate.py
 
         echo "Validating Sigma rules against sigma-schema.json"
-        echo -n "check-jsonschema --schemafile $(python ${{ github.action_path }}/validate.py schema) " > ./validate.sh
-        echo "$(sudo python ${{ github.action_path }}/validate.py rules)" >> ./validate.sh
-        chmod +x ./validate.sh
-        ./validate.sh
+        check-jsonschema --schemafile $(python ${{ github.action_path }}/validate.py schema) $(sudo python ${{ github.action_path }}/validate.py rules)
       env:
         SIGMA_RULES_PATH: ${{ inputs.paths }}
         SIGMA_SCHEMA_URL: ${{ inputs.schemaURL }}
