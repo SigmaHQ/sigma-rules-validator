@@ -1,4 +1,4 @@
-name: Validate Sigma Rules
+name: Sigma Rules Validator
 description: "Validate Sigma rules using the JSON schema"
 branding:
   icon: check-circle
