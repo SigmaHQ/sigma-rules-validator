@@ -1,4 +1,4 @@
-# validate-sigma-rules
+# sigma-rules-validator
 
 This action is used to validate Sigma rules using the JSON schema. It is used to ensure that the rules are correctly formatted and that they will work with the Sigma converter.
 
@@ -8,14 +8,14 @@ The simplest way to use the action is to use it without any inputs. This will us
 
 ```yaml
 steps:
-    - uses: SigmaHQ/validate-sigma-rules@v0
+    - uses: SigmaHQ/sigma-rules-validator@v1
 ```
 
 If you want to use a specific schema, you can use the `schemaURL` input. This will download the schema from the URL and use it for validation.
 
 ```yaml
 steps:
-    - uses: SigmaHQ/validate-sigma-rules@v0
+    - uses: SigmaHQ/sigma-rules-validator@v1
       with:
         paths: './'
         schemaURL: 'https://raw.githubusercontent.com/SigmaHQ/sigma-specification/main/sigma-schema.json'
@@ -25,7 +25,7 @@ If you want to use an existing schema, you can use the `schemaFile` input. Note 
 
 ```yaml
 steps:
-    - uses: SigmaHQ/validate-sigma-rules@v0
+    - uses: SigmaHQ/sigma-rules-validator@v1
       with:
         paths: './'
         schemaFile: './sigma-schema.json'
@@ -35,7 +35,7 @@ The `paths` can be used to provide multiple paths to the rules. For example, if 
 
 ```yaml
 steps:
-    - uses: SigmaHQ/validate-sigma-rules@v0
+    - uses: SigmaHQ/sigma-rules-validator@v1
       with:
         paths: |-
           ./rules
@@ -60,7 +60,7 @@ The path(s) to the Sigma rules in your repository. This is a optional input and 
 
 ```yaml
 steps:
-    - uses: SigmaHQ/validate-sigma-rules@v0
+    - uses: SigmaHQ/sigma-rules-validator@v1
       with:
         paths: |-
           ./rules
@@ -73,7 +73,7 @@ The URL to the latest version of the JSON schema for Sigma (or any other version
 
 ```yaml
 steps:
-    - uses: SigmaHQ/validate-sigma-rules@v0
+    - uses: SigmaHQ/sigma-rules-validator@v1
       with:
         schemaURL: 'https://raw.githubusercontent.com/SigmaHQ/sigma-specification/main/sigma-schema.json'
 ```
@@ -84,7 +84,7 @@ The path to the JSON schema for Sigma. This is an optional input and should be a
 
 ```yaml
 steps:
-    - uses: SigmaHQ/validate-sigma-rules@v0
+    - uses: SigmaHQ/sigma-rules-validator@v1
       with:
         schemaFile: './sigma-schema.json'
 ```
