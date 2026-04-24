@@ -18,7 +18,7 @@ steps:
     - uses: SigmaHQ/sigma-rules-validator@v1
       with:
         paths: './'
-        schemaURL: 'https://raw.githubusercontent.com/SigmaHQ/sigma-specification/main/sigma-schema.json'
+        schemaURL: 'https://raw.githubusercontent.com/SigmaHQ/sigma-specification/refs/heads/main/json-schema/sigma-detection-rule-schema.json'
 ```
 
 If you want to use an existing schema, you can use the `schemaFile` input. Note that the file must exist in the repository.
@@ -52,7 +52,7 @@ The action has three inputs:
 - `schemaURL`: the URL to the JSON schema for Sigma
 - `schemaFile`: the path to the JSON schema for Sigma
 
-All of the inputs are optional. If the `schemaURL` is not provided, the action will use the default schema from the [sigma-specification repository](https://raw.githubusercontent.com/SigmaHQ/sigma-specification/main/sigma-schema.json). If the `schemaFile` is not provided, the action will use the `schemaURL` to download the file locally and use it for validation.
+All of the inputs are optional. If the `schemaURL` is not provided, the action will use the default schema from the [sigma-specification repository](https://raw.githubusercontent.com/SigmaHQ/sigma-specification/refs/heads/main/json-schema/sigma-detection-rule-schema.json). If the `schemaFile` is not provided, the action will use the `schemaURL` to download the file locally and use it for validation.
 
 ### `paths` (optional)
 
@@ -69,18 +69,18 @@ steps:
 
 ### `schemaURL` (optional)
 
-The URL to the latest version of the JSON schema for Sigma (or any other version or commit). This is an optional input and should be a URL to the JSON schema. The default value is the latest version of the Sigma schema from the [sigma-specification repository](https://raw.githubusercontent.com/SigmaHQ/sigma-specification/main/sigma-schema.json):
+The URL to the latest version of the JSON schema for Sigma (or any other version or commit). This is an optional input and should be a URL to the JSON schema. The default value is the latest version of the Sigma schema from the [sigma-specification repository](https://raw.githubusercontent.com/SigmaHQ/sigma-specification/refs/heads/main/json-schema/sigma-detection-rule-schema.json):
 
 ```yaml
 steps:
     - uses: SigmaHQ/sigma-rules-validator@v1
       with:
-        schemaURL: 'https://raw.githubusercontent.com/SigmaHQ/sigma-specification/main/sigma-schema.json'
+        schemaURL: 'https://raw.githubusercontent.com/SigmaHQ/sigma-specification/refs/heads/main/json-schema/sigma-detection-rule-schema.json'
 ```
 
 ### `schemaFile` (optional)
 
-The path to the JSON schema for Sigma. This is an optional input and should be a relative path to the root of the repository. Note that the file must exist in the repository. Both the `schemaURL` or the `schemaFile` can be provided, but the `schemaFile` will be used and if the file doesn't exist, it will be downloaded. If none are provided, the action will use the default schema from the [sigma-specification repository](https://raw.githubusercontent.com/SigmaHQ/sigma-specification/main/sigma-schema.json).
+The path to the JSON schema for Sigma. This is an optional input and should be a relative path to the root of the repository. Note that the file must exist in the repository. Both the `schemaURL` or the `schemaFile` can be provided, but the `schemaFile` will be used and if the file doesn't exist, it will be downloaded. If none are provided, the action will use the default schema from the [sigma-specification repository](https://raw.githubusercontent.com/SigmaHQ/sigma-specification/refs/heads/main/json-schema/sigma-detection-rule-schema.json).
 
 ```yaml
 steps:

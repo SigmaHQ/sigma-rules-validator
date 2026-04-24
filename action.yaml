@@ -11,7 +11,7 @@ inputs:
   schemaURL:
     description: "URL of the JSON schema"
     required: false
-    default: "https://raw.githubusercontent.com/SigmaHQ/sigma-specification/main/sigma-schema.json"
+    default: "https://raw.githubusercontent.com/SigmaHQ/sigma-specification/refs/heads/main/json-schema/sigma-detection-rule-schema.json"
   schemaFile:
     description: "Path to the local JSON schema"
     required: false
