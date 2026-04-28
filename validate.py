@@ -108,7 +108,14 @@ def get_rules(sigma_rules_path: List[Path]) -> List[str] | NoReturn:
 
 
 def download_schema_file(envs: Dict[str, Any]) -> Path | NoReturn:
-    """Download the schema file from the given URL and return its path.
+    """Resolve the schema file path, downloading from the URL if needed.
+
+    If SIGMA_SCHEMA_FILE is set and exists, it is used as-is. If it is set but
+    missing, a warning is emitted and the schema is downloaded from
+    SIGMA_SCHEMA_URL. If it is unset, the schema is always downloaded from
+    SIGMA_SCHEMA_URL - no implicit lookup in the workspace.
+
+    Downloads are written to GITHUB_ACTION_PATH/sigma-schema.json.
 
     Args:
         envs (Dict[str, Any]): A dictionary containing the environment variables
@@ -121,24 +128,27 @@ def download_schema_file(envs: Dict[str, Any]) -> Path | NoReturn:
 
     schema_file = envs["SIGMA_SCHEMA_FILE"]
     schema_url = envs["SIGMA_SCHEMA_URL"]
-    if not schema_file:
-        schema_file = envs["GITHUB_WORKSPACE"] / "sigma-schema.json"
-    else:
-        schema_file = Path(schema_file)
-        if not schema_file.exists():
-            schema_file = envs["GITHUB_WORKSPACE"] / schema_file
 
-    if not schema_file.exists():
-        response = requests.get(schema_url)
-        if response.status_code == 200:
-            with open(schema_file, "wb") as f:
-                f.write(response.content)
-        else:
-            warnings.warn(
-                f"Failed to download schema file {schema_file}, skipping validation"
-            )
-            os._exit(-1)
-    return (envs["GITHUB_WORKSPACE"] / schema_file).absolute()
+    if schema_file:
+        schema_file = Path(schema_file)
+        if not schema_file.is_absolute():
+            schema_file = envs["GITHUB_WORKSPACE"] / schema_file
+        if schema_file.exists():
+            return schema_file.absolute()
+        warnings.warn(
+            f"SIGMA_SCHEMA_FILE {schema_file} not found, falling back to download from {schema_url}"
+        )
+
+    download_target = envs["GITHUB_ACTION_PATH"] / "sigma-schema.json"
+    response = requests.get(schema_url)
+    if response.status_code != 200:
+        warnings.warn(
+            f"Failed to download schema file from {schema_url}, skipping validation"
+        )
+        os._exit(-1)
+    with open(download_target, "wb") as f:
+        f.write(response.content)
+    return download_target.absolute()
 
 
 def help() -> None:
