@@ -29,9 +29,6 @@ runs:
     - name: Validate Sigma rules
       shell: bash
       run: |
-        echo "Downloading validate.py from Sigma repository"
-        wget -O ${{ github.action_path }}/validate.py https://raw.githubusercontent.com/SigmaHQ/sigma/master/tests/validate-sigma-schema/validate.py
-
         echo "Validating Sigma rules against sigma-schema.json"
         check-jsonschema --schemafile $(python ${{ github.action_path }}/validate.py schema) $(sudo -E python ${{ github.action_path }}/validate.py rules)
       env:
