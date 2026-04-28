@@ -1,0 +1,44 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  unit:
+    name: Unit tests (validate.py)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install requests pytest
+      - run: pytest tests/test_validate.py -v
+
+  action-valid:
+    name: Action accepts valid rules
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        with:
+          paths: tests/fixtures/valid
+
+  action-invalid:
+    name: Action rejects invalid rules
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: run
+        continue-on-error: true
+        uses: ./
+        with:
+          paths: tests/fixtures/invalid
+      - name: Assert action failed
+        run: |
+          if [ "${{ steps.run.outcome }}" != "failure" ]; then
+            echo "Expected action to fail on invalid rules, got: ${{ steps.run.outcome }}"
+            exit 1
+          fi
