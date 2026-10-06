@@ -21,7 +21,7 @@ steps:
         schemaURL: 'https://raw.githubusercontent.com/SigmaHQ/sigma-specification/refs/heads/main/json-schema/sigma-detection-rule-schema.json'
 ```
 
-If you want to use an existing schema, you can use the `schemaFile` input. Note that the file must exist in the repository.
+If you want to use an existing schema, you can use the `schemaFile` input. The file must exist at the given path; if it does not, the action will warn and fall back to downloading from `schemaURL`.
 
 ```yaml
 steps:
@@ -52,7 +52,7 @@ The action has three inputs:
 - `schemaURL`: the URL to the JSON schema for Sigma
 - `schemaFile`: the path to the JSON schema for Sigma
 
-All of the inputs are optional. If the `schemaURL` is not provided, the action will use the default schema from the [sigma-specification repository](https://raw.githubusercontent.com/SigmaHQ/sigma-specification/refs/heads/main/json-schema/sigma-detection-rule-schema.json). If the `schemaFile` is not provided, the action will use the `schemaURL` to download the file locally and use it for validation.
+All of the inputs are optional. If the `schemaURL` is not provided, the action will use the default schema from the [sigma-specification repository](https://raw.githubusercontent.com/SigmaHQ/sigma-specification/refs/heads/main/json-schema/sigma-detection-rule-schema.json). If the `schemaFile` is not provided, the action will always download the schema from `schemaURL`. It does not look for a schema file in your repository by default.
 
 ### `paths` (optional)
 
@@ -80,7 +80,7 @@ steps:
 
 ### `schemaFile` (optional)
 
-The path to the JSON schema for Sigma. This is an optional input and should be a relative path to the root of the repository. Note that the file must exist in the repository. Both the `schemaURL` or the `schemaFile` can be provided, but the `schemaFile` will be used and if the file doesn't exist, it will be downloaded. If none are provided, the action will use the default schema from the [sigma-specification repository](https://raw.githubusercontent.com/SigmaHQ/sigma-specification/refs/heads/main/json-schema/sigma-detection-rule-schema.json).
+The path to the JSON schema for Sigma. This is an optional input and should be a relative path to the root of the repository. When set, the file at that path is used directly. If the file does not exist, the action emits a warning and falls back to downloading from `schemaURL`. When `schemaFile` is not set, the action does not look for a default schema file in the repository but downloads from `schemaURL`. Both `schemaURL` and `schemaFile` may be provided; `schemaFile` takes precedence when present and resolvable.
 
 ```yaml
 steps:
