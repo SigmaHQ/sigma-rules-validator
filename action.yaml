@@ -42,7 +42,7 @@ runs:
         # and resolve python once outside sudo so the pinned interpreter from
         # setup-python is used instead of the system one.
         python_bin="$(command -v python)"
-        check-jsonschema --schemafile "$(python "${{ github.action_path }}/validate.py" schema)" "$(sudo env SIGMA_RULES_PATH="$SIGMA_RULES_PATH" GITHUB_WORKSPACE="$GITHUB_WORKSPACE" "$python_bin" "${{ github.action_path }}/validate.py" rules)"
+        check-jsonschema --schemafile "$(python "${{ github.action_path }}/validate.py" schema)" $(sudo env SIGMA_RULES_PATH="$SIGMA_RULES_PATH" GITHUB_WORKSPACE="$GITHUB_WORKSPACE" "$python_bin" "${{ github.action_path }}/validate.py" rules)
       env:
         SIGMA_RULES_PATH: ${{ inputs.paths }}
         SIGMA_SCHEMA_URL: ${{ inputs.schemaURL }}
