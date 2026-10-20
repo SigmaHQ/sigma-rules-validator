@@ -35,7 +35,14 @@ runs:
         wget -O ${{ github.action_path }}/validate.py https://raw.githubusercontent.com/SigmaHQ/sigma/master/tests/validate-sigma-schema/validate.py
 
         echo "Validating Sigma rules against sigma-schema.json"
-        check-jsonschema --schemafile $(python ${{ github.action_path }}/validate.py schema) $(sudo -E python ${{ github.action_path }}/validate.py rules)
+        # Do not rely on `sudo -E` to preserve the environment: a runner image
+        # update changed the sudo policy and silently dropped SIGMA_RULES_PATH,
+        # making validate.py fall back to scanning the whole workspace.
+        # Pass the variables explicitly so they survive any env_reset policy,
+        # and resolve python once outside sudo so the pinned interpreter from
+        # setup-python is used instead of the system one.
+        python_bin="$(command -v python)"
+        check-jsonschema --schemafile "$(python "${{ github.action_path }}/validate.py" schema)" $(sudo env SIGMA_RULES_PATH="$SIGMA_RULES_PATH" GITHUB_WORKSPACE="$GITHUB_WORKSPACE" "$python_bin" "${{ github.action_path }}/validate.py" rules)
       env:
         SIGMA_RULES_PATH: ${{ inputs.paths }}
         SIGMA_SCHEMA_URL: ${{ inputs.schemaURL }}
